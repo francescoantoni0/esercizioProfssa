@@ -25,7 +25,7 @@
 if (!isset($_GET['deleter'])) {
 
 } else {
-    $connector = new mysqli("cangurivolanti.ddns.net", "datagrip-host",
+    $connector = new mysqli("localhost", "datagrip-host",
         "cangurivolanti", "books");
     $query = "DELETE FROM libri WHERE ISBN = ?";
     $statement = $connector->prepare($query);
