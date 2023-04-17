@@ -15,7 +15,7 @@
 if (!isset($_GET['go_button'])) {
 
 } else {
-    $connector = new mysqli("cangurivolanti.ddns.net", "datagrip-host",
+    $connector = new mysqli("localhost", "datagrip-host",
         "cangurivolanti", "books");
     $query = 'SELECT * FROM libri, editori, autori WHERE libri.Id_Editore = editori.Id_Editore AND autori.Id_Autore = libri.Id_Autore AND Anno BETWEEN ? AND ?';
     $beg_date = $_GET['first_date'];
