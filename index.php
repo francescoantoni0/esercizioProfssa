@@ -15,7 +15,24 @@
 <ul>
     <li><button><a href="view-db.php">Visualizza database</a></button></li>
 </ul>
+<form action="index.php">
+    <label>
+        Elimina libro: <input type="text" name="deleter" placeholder="978-88-88-88-8">
+    </label>
+    <input type="submit" name="go_deleter" value="Elimina!">
+</form>
+<?php
+if (!isset($_GET['deleter'])) {
 
+} else {
+    $connector = new mysqli("cangurivolanti.ddns.net", "datagrip-host",
+        "cangurivolanti", "books");
+    $query = "DELETE FROM libri WHERE ISBN = ?";
+    $statement = $connector->prepare($query);
+    $statement->bind_param("s", $_GET['deleter']);
+    $statement->execute();
+}
+?>
 </body>
 </html>
 

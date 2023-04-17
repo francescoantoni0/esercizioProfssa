@@ -10,21 +10,50 @@
 </head>
 <body>
 <h1 class="title">Visualizzazione DB</h1>
-<br>
-<label>Inizio:
-    <input id="first_date" type="date">
-</label>
-<label id="second_date">
-    Fine: <input type="date">
-</label>
-<button id="go_button">Vai!</button>
 <?php
-$connector = new mysqli("cangurivolanti.ddns.net", "datagrip-host",
-    "cangurivolanti", "books");
-$query = "SELECT * FROM libri WHERE Anno BETWEEN ? AND ?";
 
-//$connector->query($query);
+if (!isset($_GET['go_button'])) {
+
+} else {
+    $connector = new mysqli("cangurivolanti.ddns.net", "datagrip-host",
+        "cangurivolanti", "books");
+    $query = 'SELECT * FROM libri, editori, autori WHERE libri.Id_Editore = editori.Id_Editore AND autori.Id_Autore = libri.Id_Autore AND Anno BETWEEN ? AND ?';
+    $beg_date = $_GET['first_date'];
+    $end_date = $_GET['second_date'];
+    $statement = $connector->prepare($query);
+    $statement->bind_param("ss", $beg_date, $end_date);
+    $statement->execute();
+    $result = $statement->get_result();
+    echo '<br>';
+    echo '<table>';
+    echo "<tr>";
+    echo "<th>ISBN</th>";
+    echo "<th>Titolo</th>";
+    echo '<th>Editore</th>';
+    echo '<th>Autore</th>';
+    echo '<th>Anno</th>';
+    echo "</tr>";
+
+    foreach ($result as $row){
+        echo "<tr>";
+        echo "<td>$row[ISBN]</td>";
+        echo "<td>$row[Titolo]</td>";
+        echo "<td>$row[Ragione_Sociale]</td>";
+        echo "<td>$row[Cognome]</td>";
+        echo "<td>$row[Anno]</td>";
+        echo "</tr>";
+    }
+}
 ?>
 
+<form action="view-db.php" method="get">
+    <label>Inizio:
+        <input name="first_date" type="number">
+    </label>
+    <label>
+        Fine: <input name="second_date" type="number">
+    </label>
+    <input id="go" type="submit" name="go_button" value="Go!">
+</form>
 </body>
 </html>

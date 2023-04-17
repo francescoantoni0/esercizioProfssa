@@ -55,3 +55,7 @@ button {
     font-weight: bold;
     border: none;
 }
+
+table {
+    border: solid;
+}
